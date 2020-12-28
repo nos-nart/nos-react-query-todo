@@ -1,0 +1,9 @@
+GET http://localhost:3000/todos
+
+###
+
+POST http://localhost:3000/todos content-Type: application/json
+
+{
+"title": "test 1"
+}

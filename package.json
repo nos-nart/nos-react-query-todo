@@ -1,0 +1,19 @@
+{
+  "name": "nos-react-query-todo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/nos-nart/nos-react-query-todo.git",
+  "author": "nam hoang <nam.hoang@ntq-solution.com.vn>",
+  "license": "MIT",
+  "scripts": {
+    "server:install": "cd server && yarn",
+    "client:install": "cd client && yarn",
+    "install": "concurrently \"yarn server:install\" \"yarn client:install\"",
+    "client:dev": "cd client && yarn start",
+    "server:dev": "cd server && yarn dev",
+    "dev": "concurrently \"yarn server:dev\" \"yarn client:dev\""
+  },
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
