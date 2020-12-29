@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/nos-nart/nos-react-query-todo.git",
-  "author": "nam hoang <nam.hoang@ntq-solution.com.vn>",
+  "author": "nos-nart <nosnart1510@gmail.com>",
   "license": "MIT",
   "scripts": {
     "server:install": "cd server && yarn",

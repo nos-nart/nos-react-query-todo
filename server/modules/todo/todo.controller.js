@@ -1,5 +1,4 @@
 const Todo = require('./todo.model');
-const { nanoid } = require('nanoid');
 
 async function getTodos(req, res) {
   try {
@@ -11,10 +10,8 @@ async function getTodos(req, res) {
 }
 
 async function addTodo(req, res) {
-  const todo = new Todo({
-    title: req.body.title,
-    id: nanoid()
-  })
+  const { title, id } = req.body;
+  const todo = new Todo({ title, id });
 
   try {
     const newTodo = await todo.save();
