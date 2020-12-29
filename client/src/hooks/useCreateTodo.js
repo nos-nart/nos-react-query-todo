@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useMutation, queryCache } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 const createTodo = async ({ title, id }) => {
   const response = await axios({
@@ -7,29 +7,29 @@ const createTodo = async ({ title, id }) => {
     url: 'http://localhost:4000/todos',
     data: {title, id}
   })
-  console.log('response: ', response);
   return response;
 }
 
 export default function useCreateTodo() {
+  const queryClient = useQueryClient();
+
   return useMutation(
     createTodo,
     {
-      onMutate: (newTodo) => {
-        // const previousTodos = queryCache.getQueryData('todos')
+      onMutate: async (newTodo) => {
+        await queryClient.cancelQueries("todos");
+        const previousValue = queryClient.getQueryData("todos");
 
-        // if (queryCache.getQueryData('todos')) {
-        //   queryCache.setQueryData('todos', old => [...old, newTodo])
-        // }
+        queryClient.setQueryData("todos", (old) => [...old, newTodo]);
 
-        // return () => queryCache.setQueryData('todos', previousTodos)
+        return previousValue;
       },
       onError: (error, _newTodo, rollback) => {
         console.error(error);
         if (rollback) rollback()
       },
       onSettled: () => {
-        // queryCache.invalidateQueries('todos');
+        queryClient.invalidateQueries('todos');
       }
     }
   )

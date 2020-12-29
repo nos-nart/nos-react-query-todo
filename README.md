@@ -70,26 +70,25 @@ const todoQuery = useTodos();
 
 ```js
 export default function useCreateTodo() {
+  const queryClient = useQueryClient();
+
   return useMutation(
     createTodo,
     {
-      onMutate: (newTodo) => {
-        // NOTE: HINT REACT-QUERY TO REFETCH THE DATA
+      onMutate: async (newTodo) => {
+        await queryClient.cancelQueries("todos");
+        const previousValue = queryClient.getQueryData("todos");
 
-        // const previousTodos = queryCache.getQueryData('todos')
+        queryClient.setQueryData("todos", (old) => [...old, newTodo]);
 
-        // if (queryCache.getQueryData('todos')) {
-        //   queryCache.setQueryData('todos', old => [...old, newTodo])
-        // }
-
-        // return () => queryCache.setQueryData('todos', previousTodos)
+        return previousValue;
       },
       onError: (error, _newTodo, rollback) => {
         console.error(error);
         if (rollback) rollback()
       },
       onSettled: () => {
-        // queryCache.invalidateQueries('todos');
+        queryClient.invalidateQueries('todos');
       }
     }
   )

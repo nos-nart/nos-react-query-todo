@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { useQuery, queryCache } from 'react-query';
+import { useQuery } from 'react-query';
 
 export default function useTodos() {
   return useQuery(
@@ -9,7 +9,7 @@ export default function useTodos() {
     {
       onSuccess: data => {
         console.log('data: ', data);
-        queryCache.setQueryData('todos', data);
+        // queryCache.setQueryData('todos', data);
       }
     }
   )
