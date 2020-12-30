@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <div style={{ width: '500px', margin: '0 auto' }}>
+        <div style={{ width: '700px', margin: '0 auto' }}>
           <TodoApp />
         </div>
       </QueryClientProvider>

@@ -6,5 +6,7 @@ router
   .route('/todos')
   .get(TodoController.getTodos)
   .post(TodoController.addTodo)
+  .delete(TodoController.removeTodo)
+  .patch(TodoController.updateTodo)
 
 module.exports = router;

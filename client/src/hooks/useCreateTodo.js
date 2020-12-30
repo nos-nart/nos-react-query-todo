@@ -17,9 +17,11 @@ export default function useCreateTodo() {
     createTodo,
     {
       onMutate: async (newTodo) => {
+        // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
         await queryClient.cancelQueries("todos");
+        // Snapshot the previous value
         const previousValue = queryClient.getQueryData("todos");
-
+        // Optimistically update to the new value
         queryClient.setQueryData("todos", (old) => [...old, newTodo]);
 
         return previousValue;

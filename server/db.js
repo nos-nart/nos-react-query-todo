@@ -16,7 +16,8 @@ const connectDB = function() {
   return mongoose.connect(url, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true 
+    useUnifiedTopology: true ,
+    useFindAndModify: false
   })
 }
 

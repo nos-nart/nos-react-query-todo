@@ -7,12 +7,14 @@ import useCreateTodo from '../hooks/useCreateTodo';
 const { Title } = Typography;
 
 export const TodoHeader = () => {
+  const formRef = React.createRef();
   const [form] = Form.useForm();
   const mutation = useCreateTodo();
 
   const onAdd = values => {
     const { title } = values;
     mutation.mutate({ title, id: nanoid() });
+    formRef.current.resetFields();
   }
 
   return (
@@ -23,6 +25,7 @@ export const TodoHeader = () => {
       <Row justify="space-between" gutter="8">
         <Form
           form={form}
+          ref={formRef}
           layout="inline"
           style={{ width: '100%' }}
           onFinish={onAdd}

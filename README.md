@@ -76,9 +76,11 @@ export default function useCreateTodo() {
     createTodo,
     {
       onMutate: async (newTodo) => {
+        // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
         await queryClient.cancelQueries("todos");
+        // Snapshot the previous value
         const previousValue = queryClient.getQueryData("todos");
-
+        // Optimistically update to the new value
         queryClient.setQueryData("todos", (old) => [...old, newTodo]);
 
         return previousValue;
@@ -94,3 +96,16 @@ export default function useCreateTodo() {
   )
 }
 ```
+
+### Express note
+
+**PUT should send the entire object, for instance**
+
+```js
+/users/1
+PUT {id: 1, username: 'skwee357', email: 'newemail@domain.com'}
+```
+
+**PUT may not be too effective is that your only really modifying one field and including the username is kind of useless**
+
+**When you use a PATCH, you only update the field you specify and leave the rest alone**
