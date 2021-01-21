@@ -97,7 +97,7 @@ export default function useCreateTodo() {
 }
 ```
 
-### Express note
+### server
 
 **PUT should send the entire object, for instance**
 
