@@ -1,46 +1,31 @@
 import React from 'react'
-import { Row, Table, Typography, Checkbox, Space, Button, Empty, Input } from 'antd';
+import { Row, Table, Typography, Checkbox, Space, Button, Input } from 'antd';
 import { DeleteOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
-import useTodos from '../hooks/useTodos';
-import useDeleteTodo from '../hooks/useDeleteTodo';
+import { useQuery } from 'react-query';
+
+import { getTodos } from '../services/todoServices';
 
 const { Column } = Table;
 const { Text } = Typography;
 
 export const TodoList = () => {
-  const [edit, setEdit] = React.useState(false);
-  const todoQuery = useTodos();
-  const deleteMutation = useDeleteTodo();
+  // eslint-disable-next-line no-unused-vars
+  let { data, isLoading, isError, isFetched, error } = useQuery('todos', getTodos);
 
-  const onDelete = (id) => {
-    deleteMutation.mutate({ id });
+  if (isError) {
+    return (
+      <>Something went wrong</>
+    )
   }
-
-  let nos = todoQuery.data && todoQuery.data.map(i => {
-    return {...i, edit: false};
-  })
-
-  const onEdit = id => {
-    setEdit(() => !edit);
-    console.log('id ~> ', id);
-    nos = nos.map(i => {
-      if (i.id === id) return {...i, edit: true}
-      return i;
-    })
-  }
-
-  React.useEffect(() => {
-    console.log(`nos ~> `, nos);
-  }, [nos])
 
   return (
     <Row>
       <Table
         style={{ width: '100%' }}
         bordered={true}
-        loading={todoQuery.isLoading}
-        hasData={todoQuery.data && todoQuery.data.length}
-        dataSource={nos}
+        loading={isLoading}
+        hasData={data && data.length}
+        dataSource={data}
         pagination={false}
         size="small"
       >
@@ -76,12 +61,10 @@ export const TodoList = () => {
           render={(_, record) => (
             <Space size="middle">
               <Button
-                onClick={() => onDelete(record._id)}
                 size="small" danger
                 icon={<DeleteOutlined />}
               />
               <Button
-                onClick={() => onEdit(record.id)}
                 size="small"
                 icon={record.edit ? <SaveOutlined />  : <EditOutlined />}
               />

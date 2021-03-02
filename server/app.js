@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/', todoRouter);
+app.use('/todos', todoRouter);
 
 connectDB()
   .then(async () => {

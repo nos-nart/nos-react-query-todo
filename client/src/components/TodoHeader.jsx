@@ -2,19 +2,20 @@ import React from 'react'
 import { Col, Input, Button, Row, Typography, Form, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
-import useCreateTodo from '../hooks/useCreateTodo';
+import { useMutation, useQueryClient } from "react-query";
+
+import { addTodo } from '../services/todoServices';
 
 const { Title } = Typography;
 
 export const TodoHeader = () => {
   const formRef = React.createRef();
   const [form] = Form.useForm();
-  const mutation = useCreateTodo();
+  const { mutateAsync, isLoading } = useMutation(addTodo);
 
-  const onAdd = values => {
+  const onAdd = async (values) => {
     const { title } = values;
-    mutation.mutate({ title, id: nanoid() });
-    formRef.current.resetFields();
+    await mutateAsync({ id: nanoid(), title });
   }
 
   return (
